@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mastercard.gateway.android.sdk.api.UpdateSessionResponse;
+
 import sdk.Gateway;
 import sdk.Gateway3DSecureCallback;
 import sdk.GatewayCallback;
@@ -250,6 +252,11 @@ public class ProcessPaymentActivity extends AppCompatActivity {
 //
 //            binding.startButton.setVisibility(View.GONE);
 //            binding.groupConfirm.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onSuccess(UpdateSessionResponse response) {
+
         }
 
         @Override

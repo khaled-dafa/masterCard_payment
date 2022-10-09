@@ -17,7 +17,9 @@
 package sdk;
 
 
-public interface GatewayCallback {
+import com.mastercard.gateway.android.sdk.api.UpdateSessionResponse;
+
+public interface GatewayCallback extends com.mastercard.gateway.android.sdk.api.GatewayCallback<UpdateSessionResponse> {
 
     /**
      * Callback on a successful call to the Gateway API

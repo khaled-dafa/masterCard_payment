@@ -1,43 +1,34 @@
 package com.example.payment;
 
 
-import static com.example.payment.ApiController.GSON;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.View;
+
+
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.wallet.PaymentsClient;
-import com.google.android.gms.wallet.Wallet;
-import com.google.android.gms.wallet.WalletConstants;
-import com.mastercard.gateway.android.sdk.Gateway;
+import com.mastercard.gateway.android.sdk.api.UpdateSessionResponse;
+
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
-import javax.net.ssl.HttpsURLConnection;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
+import sdk.Gateway;
 import sdk.Gateway3DSecureCallback;
+import sdk.GatewayCallback;
 import sdk.GatewayMap;
 
 
@@ -94,6 +85,33 @@ public class MainActivity extends FlutterActivity {
                 String threeDSId = UUID.randomUUID().toString();
                 threeDSId = threeDSId.substring(0, threeDSId.indexOf('-'));
 
+                Gateway gateway = new Gateway();
+                gateway.setMerchantId("3000000642");
+                gateway.setRegion(Gateway.Region.NORTH_AMERICA);
+                GatewayCallback callback = new GatewayCallback() {
+                    @Override
+                    public void onSuccess(GatewayMap response) {
+                        // TODO handle success
+                    }
+
+                    @Override
+                    public void onSuccess(UpdateSessionResponse response) {
+                        // TODO handle success
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        // TODO handle error
+                    }
+                };
+                GatewayMap request = new GatewayMap()
+                        .set("sourceOfFunds.provided.card.nameOnCard", nameOnCard)
+                        .set("sourceOfFunds.provided.card.number", cardNumber)
+                        .set("sourceOfFunds.provided.card.securityCode", cardCvv)
+                        .set("sourceOfFunds.provided.card.expiry.month", cardExpiryMM)
+                        .set("sourceOfFunds.provided.card.expiry.year", cardExpiryYY);
+
+                gateway.updateSession(sessionId ,"39" ,request , callback);
 //                paymentsClient = Wallet.getPaymentsClient(this, new Wallet.WalletOptions.Builder()
 //                        .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
 //                        .build());
@@ -147,4 +165,5 @@ public class MainActivity extends FlutterActivity {
     }
 
     }
+
 
